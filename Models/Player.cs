@@ -27,6 +27,11 @@ namespace MiAplicacionWeb.Models
     [Display(Name = "Posición en el campo")]
     public string Position { get; set; }
 
+    [Display(Name = "Equipo")]
+    [StringLength(100, ErrorMessage = "El nombre del equipo no puede exceder 100 caracteres")]
+    [Required(ErrorMessage = "El quipo  obligatoria")]
+    public string? Equipo { get; set; } // Nombre del equipo al que pertenece el jugador (opcional)
+
     public ICollection<Assignment> Assignments { get; set; } = new List<Assignment>();
   }
 }
