@@ -1,0 +1,80 @@
+@model MiAplicacionWeb.Models.Assignment
+
+@{
+    ViewData["Title"] = "Asignar Jugador a Equipo";
+}
+
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h3 class="card-title">Asignar Jugador a Equipo</h3>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+{
+  <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+@if (TempData["WarningMessage"] != null)
+{
+  <div class="alert alert-warning">@TempData["WarningMessage"]</div>
+}
+@if (TempData["ErrorMessage"] != null)
+{
+  <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+    <div class="card-body">
+        <form asp-action="Create" class="needs-validation" novalidate>
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+            
+            <div class="mb-3">
+                <label asp-for="PlayerId" class="form-label">Jugador</label>
+                <select asp-for="PlayerId" class="form-select" required>
+                    <option value="">-- Seleccione un jugador --</option>
+                    @foreach (var player in ViewBag.PlayersList)
+                    {
+                        <option value="@player.Id">@player.DisplayName</option>
+                    }
+                </select>
+                <span asp-validation-for="PlayerId" class="text-danger"></span>
+            </div>
+            
+            <div class="mb-3">
+                <label asp-for="TeamId" class="form-label">Equipo</label>
+                <select asp-for="TeamId" class="form-select" required
+                        asp-items="@(ViewBag.Teams as SelectList)">
+                    <option value="">-- Seleccione un equipo --</option>
+                </select>
+                <span asp-validation-for="TeamId" class="text-danger"></span>
+            </div>
+            
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="submit" class="btn btn-primary me-md-2">
+                    <i class="fas fa-save"></i> Asignar
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        // Validación del lado del cliente mejorada
+        (() => {
+            'use strict'
+            const forms = document.querySelectorAll('.needs-validation')
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+}
