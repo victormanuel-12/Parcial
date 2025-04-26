@@ -1,0 +1,39 @@
+@model IEnumerable<MiAplicacionWeb.Models.JugadorEquipoViewModel>
+
+<h2>Jugadores y sus Equipos</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Jugador</th>
+            <th>Edad</th>
+            <th>Posición</th>
+            <th>Equipos</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.NombreJugador</td>
+                <td>@item.Edad</td>
+                <td>@item.Posicion</td>
+                <td>
+                    @if (item.Equipos.Any())
+                    {
+                        <ul>
+                            @foreach (var equipo in item.Equipos)
+                            {
+                                <li>@equipo</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <span class="text-muted">Sin equipos asignados</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

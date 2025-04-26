@@ -18,9 +18,22 @@ namespace MiAplicacionWeb.Controllers
     }
 
     // GET: Player
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> JugadoresConEquipos()
     {
-      return View(await _context.Players.ToListAsync());
+      var jugadoresConEquipos = await _context.Players
+          .Include(p => p.Assignments)
+              .ThenInclude(a => a.Team)
+          .Select(p => new JugadorEquipoViewModel
+          {
+            JugadorId = p.Id,
+            NombreJugador = p.Name,
+            Edad = p.Age,
+            Posicion = p.Position,
+            Equipos = p.Assignments.Select(a => a.Team.Name).ToList()
+          })
+          .ToListAsync();
+
+      return View(jugadoresConEquipos);
     }
 
     // GET: Player/Create
